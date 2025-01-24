@@ -603,7 +603,7 @@ confirm: True
 
 ---
 id: download appellee_brief
-event: appellee_brief_download
+event: informal_appellee_brief_form_download
 question: |
   All done
 subquestion: |
@@ -626,29 +626,29 @@ always include editable files: True
 ---
 # ALDocument objects specify the metadata for each template
 objects:
-  - appellee_brief_Post_interview_instructions: ALDocument.using(title="Instructions", filename="", enabled=True, has_addendum=False)
-  - appellee_brief_attachment: ALDocument.using(title="Appellee brief", filename="appellee_brief", enabled=True, has_addendum=False, )
+  - appellee_brief_Post_interview_instructions: ALDocument.using(title="Instructions", filename="informal_appellee_brief_form_next_steps.docx", enabled=True, has_addendum=False)
+  - appellee_brief_attachment: ALDocument.using(title="Appellee brief", filename="informal_appellee_brief_form.docx", enabled=True, has_addendum=False, )
 ---
 # Bundles group the ALDocuments into separate downloads, such as for court and for the user
 objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[appellee_brief_Post_interview_instructions, appellee_brief_attachment, exhibit_attachment], filename="appellee_brief", title="All forms to download for your records", enabled=True)
-  - al_court_bundle: ALDocumentBundle.using(elements=[appellee_brief_attachment, exhibit_attachment],  filename="appellee_brief", title="All forms to deliver to court", enabled=True)
+  - al_user_bundle: ALDocumentBundle.using(elements=[appellee_brief_Post_interview_instructions, appellee_brief_attachment, exhibit_attachment], filename="informal_appellee_brief_form.docx", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[appellee_brief_attachment, exhibit_attachment],  filename="informal_appellee_brief_form.docx", title="All forms to deliver to court", enabled=True)
 ---
 # Each attachment defines a key in an ALDocument. We use i as the placeholder here so the same template is 
 # used for "preview" and "final" keys, and logic in the template checks the value of 
 # i to show or hide the user's signature
 attachment:
   name: Post-interview-Instructions
-  filename: appellee_brief_next_steps
-  docx template file: 
+  filename: informal_appellee_brief_form_next_steps
+  docx template file: informal_appellee_brief_form_next_steps.docx
   variable name: appellee_brief_Post_interview_instructions[i]
   skip undefined: True
   tagged pdf: True
 ---
 attachment:
   name: appellee brief
-  filename: appellee_brief
+  filename: informal_appellee_brief_form.docx
   variable name: appellee_brief_attachment[i]
   skip undefined: True
-  docx template file: appellee_brief.docx
+  docx template file: informal_appellee_brief_form.docx
   tagged pdf: True
