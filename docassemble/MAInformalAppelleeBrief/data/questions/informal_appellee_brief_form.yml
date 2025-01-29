@@ -251,6 +251,7 @@ subquestion: |
 fields:
   - "Facts": appeal_facts
     input type: area
+    required: False
 --- 
 id: Argument
 question: |
