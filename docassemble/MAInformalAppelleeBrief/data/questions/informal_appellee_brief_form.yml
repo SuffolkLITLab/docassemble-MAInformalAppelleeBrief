@@ -237,6 +237,7 @@ fields:
     input type: area
     help: |
       List specific decisions that the judge made. This does not have to necessarily be the final result of the case. You could say 'The judge's decision to allow _________ as evidence.'
+    required: False
 ---
 id: Facts
 question: |
