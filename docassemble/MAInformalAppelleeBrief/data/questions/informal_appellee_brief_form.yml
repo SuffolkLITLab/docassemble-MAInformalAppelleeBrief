@@ -223,6 +223,7 @@ fields:
       **Reliance on evidence that should have been excluded**: This occurs when the judge either 
         - Did not allow you to prove something that you should have been allowed to prove.
         - Allowed the other side to prove something that they should not have been allowed to prove.
+    required: False 
 ---
 id: Challenged judgments
 question: |
