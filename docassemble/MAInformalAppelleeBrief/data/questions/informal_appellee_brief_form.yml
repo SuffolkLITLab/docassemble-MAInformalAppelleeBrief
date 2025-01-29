@@ -20,6 +20,7 @@ metadata:
     * The names of the plaintiff(s) and defendant(s) in your trial court case. 
     * The current due date for your brief. 
     * The date by which you are able to file your brief by, within the court guidelines. 
+    * A copy of the brief written and sent to you by the appellant(s). 
   maturity: production
   estimated_completion_minutes: 30
   estimated_completion_delta: 5
@@ -167,6 +168,7 @@ subquestion: |
     * The names of the plaintiff(s) and defendant(s) in your trial court case. 
     * The current due date for your brief. 
     * The date by which you are able to file your brief by, within the court guidelines. 
+    * A copy of the brief written and sent to you by the appellant(s). 
 
   Most people take about 30 minutes to complete this interview. 
 ---
