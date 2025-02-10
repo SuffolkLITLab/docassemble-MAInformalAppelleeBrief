@@ -127,17 +127,27 @@ code: |
   set_parts(subtitle=str(users))
   Information
   record_appendix
-  if record_appendix_document.exhibits.has_exhibits:
-    record_appendix_document.exhibits.gather()
-  contents = ""
-  for item in record_appendix_document.exhibits:
-    contents += str(item)
+  if record_appendix:
+    if record_appendix_document.exhibits.has_exhibits:
+      record_appendix_document.exhibits.gather()
+      contents = ""
+      for item in record_appendix_document.exhibits:
+        contents += str(item)
+    else: 
+      pass
+  else: 
+    pass
   impounded_record_appendix
-  if impounded_record_appendix_document.exhibits.has_exhibits:
-    impounded_record_appendix_document.exhibits.gather()
-  contents = ""
-  for item in impounded_record_appendix_document.exhibits:
-    contents += str(item)
+  if impounded_record_appendix:
+    if impounded_record_appendix_document.exhibits.has_exhibits:
+      impounded_record_appendix_document.exhibits.gather()
+      contents = ""
+      for item in impounded_record_appendix_document.exhibits:
+        contents += str(item)
+    else:
+      pass
+  else:
+    pass
   set_progress(16)
   trial_court
   decision_date
@@ -596,7 +606,7 @@ review:
     show if: record_appendix_document.exhibits.has_exhibits
   - Edit: impounded_record_appendix_document.exhibits.has_exhibits
     button: |
-      **Exhibits attached?**
+      **Impounded documents from the lower court case attached?**
       
       % if impounded_record_appendix_document.exhibits.has_exhibits:
       Yes
