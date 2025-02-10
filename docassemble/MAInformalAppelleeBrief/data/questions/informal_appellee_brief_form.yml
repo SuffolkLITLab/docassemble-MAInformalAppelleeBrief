@@ -708,7 +708,7 @@ always include editable files: True
 # ALDocument objects specify the metadata for each template
 objects:
   - appellee_brief_Post_interview_instructions: ALDocument.using(title="Instructions", filename="informal_appellee_brief_form_next_steps_2.docx", enabled=True, has_addendum=False)
-  - appellee_brief_attachment: ALDocument.using(title="Appellee brief", filename="informal_appellee_brief_form.docx", enabled=True, has_addendum=False, )
+  - appellee_brief_attachment: ALDocument.using(title="Appellee brief", filename="appellee_brief.docx", enabled=True, has_addendum=False, )
   - record_appendix_document: ALExhibitDocument.using(title="Record Appendix", filename="record_appendix_document", enabled=True, has_addendum=False, )
   - impounded_record_appendix_document: ALExhibitDocument.using(title="Impounded Record Appendix", filename="impounded_record_appendix_document", enabled=True, has_addendum=False, )
 ---
@@ -717,8 +717,8 @@ objects:
 ---
 # Bundles group the ALDocuments into separate downloads, such as for court and for the user
 objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[appellee_brief_Post_interview_instructions, grouped_docs, appellee_brief_attachment, record_appendix_document, impounded_record_appendix_document], filename="informal_appellee_brief_form.docx", title="All forms to download for your records", enabled=True)
-  - al_court_bundle: ALDocumentBundle.using(elements=[grouped_docs, appellee_brief_attachment, record_appendix_document, impounded_record_appendix_document],  filename="informal_appellee_brief_form.docx", title="All forms to deliver to court", enabled=True)
+  - al_user_bundle: ALDocumentBundle.using(elements=[appellee_brief_Post_interview_instructions, grouped_docs, appellee_brief_attachment, record_appendix_document, impounded_record_appendix_document], filename="appellee_brief.docx", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[grouped_docs, appellee_brief_attachment, record_appendix_document, impounded_record_appendix_document],  filename="appellee_brief.docx", title="All forms to deliver to court", enabled=True)
 ---
 # Each attachment defines a key in an ALDocument. We use i as the placeholder here so the same template is 
 # used for "preview" and "final" keys, and logic in the template checks the value of 
@@ -733,8 +733,8 @@ attachment:
 ---
 attachment:
   name: appellee brief
-  filename: informal_appellee_brief_form.docx
+  filename: appellee_brief.docx
   variable name: appellee_brief_attachment[i]
   skip undefined: True
-  docx template file: informal_appellee_brief_form.docx
+  docx template file: appellee_brief.docx
   tagged pdf: True
