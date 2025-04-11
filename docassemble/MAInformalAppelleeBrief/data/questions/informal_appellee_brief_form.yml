@@ -810,3 +810,40 @@ generic object: ALExhibit
 attachment:
   variable name: x.cover_page
   docx template file: exhibit_cover_sheet.docx
+---
+generic object: ALExhibitList
+id: any exhibits
+question: |
+  This is where you will upload your documents. 
+subquestion: |
+  Remember that you **must** upload a record appendix. **Impounded** documents are only required if you have impounded material.
+fields:
+  #- Do you have a document to upload on this screen?: x.has_exhibits
+    #datatype: yesnoradio
+  - note: |
+      You will have a chance to upload multiple documents. 
+      You can also add additional pages to this document.
+  - First document title: x[0].title
+    maxlength: 60 # longer might break TOC
+  - Upload the first document: x[0].pages
+    datatype: files
+    maximum image size: 1024
+    image upload type: jpeg
+    accept: |
+      "image/png, image/jpeg, .doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,.pdf"  
+validation code: |
+  if x.has_exhibits:
+    if not x[0].pages:
+      validation_error("Please upload your document or answer 'No' to the previous question.")
+    full_size = sum(a_page.size_in_bytes() for a_page in x[0].pages)
+    if full_size > (15 * 1024 * 1024):
+      validation_error("Upload a file smaller than 15 MB.")
+    if hasattr(x, 'maximum_size'):
+      if full_size > x.maximum_size:
+        validation_error(f"Upload a file smaller than {humanize.naturalsize(x.maximum_size)}")
+    try:
+      pdf_concatenate(x[0].pages)
+    except:
+      validation_error("Unable to convert this file. Please upload a new one.")
+    x[0].pages.complete_attribute = 'ok'
+    x[0].pages.reset_gathered()  # force re-gathering additional pages
