@@ -200,7 +200,7 @@ code: |
   support
 
   nav.set_section('Other parties')
-  other_parties[0].address.address
+  other_parties[0].address.on_one_line
   other_parties[0].email
 
   nav.set_section ('Certificate of service')
@@ -346,9 +346,9 @@ fields:
 ---
 id: Issues on Appeal
 question: |
-  Issues on appeal
+  Issue(s) or claim(s) of error on appeal
 subquestion: |
-  You do not have to list the issues before the Appeals Court unless you want to or disagree with what the appellant (appealing party) wrote. 
+  You do not have to list the issue(s) or claim(s) of error before the Appeals Court unless you want to or disagree with what the appellant (appealing party) wrote. 
 
   It is your obligation to find out if any information in your case is impounded or confidential; for more information, please go to section (c) (4) of the [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program). 
 fields:
@@ -384,7 +384,7 @@ fields:
 ---
 id: Facts
 question: |
-  Facts
+  Statement of the facts
 subquestion: |
   You do not have to provide a statement of the facts that are related to the issues on appeal unless you want to or disagree with what the appellant wrote. If you state facts, each statement must be followed by a reference to the specific page or pages in the appellant's record appendix, transcript(s), or the supplemental appendix where that fact is found **(Examples -– "Apx at 25"; "Transcript 10/15/22 at pg 55"; "Exhibit #2 at pg 95")**.  
   
@@ -478,9 +478,9 @@ fields:
 ---
 id: Conclusion
 question: |
-  Conclusion
+  Conclusion/Relief requested
 subquestion: |
-  Write a statement of what you are asking the Appeals Court to do (for example, affirm the judgment).
+  Write a statement of what relief or outcome you are asking the Appeals Court to order (for example, affirm the judgment).
 
   [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program).
 fields:
