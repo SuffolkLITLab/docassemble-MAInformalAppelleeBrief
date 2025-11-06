@@ -762,7 +762,8 @@ code: |
 objects:
   - appellee_brief_Post_interview_instructions: ALDocument.using(title="Instructions", filename="appellee_brief_next_steps.docx", enabled=True, has_addendum=False)
   - appellee_brief_attachment: ALDocument.using(title="Appellee Brief", filename="appellee_brief.docx", enabled=True, has_addendum=False, )
-  - record_appendix_document: ALExhibitDocument.using(title="Supplemental Record Appendix", filename="record_appendix_document", enabled=True, has_addendum=False, )
+  #- record_appendix_document: ALExhibitDocument.using(title="Supplemental Record Appendix", filename="record_appendix_document", enabled=True, has_addendum=False, )
+  # Note: record_appendix_document is already defined above (lines 89-96) with add_page_numbers=True
   #- impounded_document: DAFileList.using(title="Impounded Record Appendix", filename="impounded_document", enabled=True, has_addendum=False, )
 ---
 # Bundles group the ALDocuments into separate downloads, such as for court and for the user
