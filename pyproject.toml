@@ -1,0 +1,30 @@
+license = "MIT"
+license-files = [
+    "LICENSE",
+]
+
+[build-system]
+requires = [
+    "setuptools==80.9.0",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "docassemble.MAInformalAppelleeBrief"
+version = "1.2"
+description = "Massachusetts informal appellee brief form."
+readme = "README.md"
+authors = [
+    { name = " Erin Gray", email = "erin.gray@su.suffolk.edu" },
+]
+dependencies = [
+    "docassemble.AssemblyLine @ git+https://github.com/SuffolkLITLab/docassemble-AssemblyLine.git@main",
+]
+
+[project.urls]
+Homepage = "https://suffolklitlab.org"
+
+[tool.setuptools.packages.find]
+where = [
+    ".",
+]
