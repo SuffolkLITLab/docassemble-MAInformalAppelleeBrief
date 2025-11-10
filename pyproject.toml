@@ -11,7 +11,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "docassemble.MAInformalAppelleeBrief"
-version = "1.2"
+version = "1.2.3"
 description = "Massachusetts informal appellee brief form."
 readme = "README.md"
 authors = [
