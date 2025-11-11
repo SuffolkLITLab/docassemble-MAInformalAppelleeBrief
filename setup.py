@@ -44,7 +44,7 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
     return out
 
 setup(name='docassemble.MAInformalAppelleeBrief',
-      version='1.2.3',
+      version='1.2.7',
       description=('Massachusetts informal appellee brief form.'),
       long_description='# docassemble.InformalAppelleeBriefForm\r\n\r\nInformal appellee brief form\r\n\r\n## Author\r\n\r\n \r\n\r\n',
       long_description_content_type='text/markdown',
