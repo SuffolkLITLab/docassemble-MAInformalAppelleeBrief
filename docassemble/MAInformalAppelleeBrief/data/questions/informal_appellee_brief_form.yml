@@ -189,21 +189,6 @@ code: |
   impounded_upload_question
   if impounded_document.exhibits.has_exhibits:
     impounded_document.exhibits.gather()
-  
-  #record_appendix
-  # Force initialization of there_is_another before any questions are asked
-  # This must happen before gather() is called to prevent NameError
-  #record_appendix_document.exhibits.there_is_another = #getattr(record_appendix_document.exhibits, 'there_is_another', False)
-  #if record_appendix_document.exhibits.has_exhibits == True:
-    #record_appendix_document.exhibits.gather()
-    #appendix
-  #impounded_record_appendix
-  #impounded_upload_question
-  # Force initialization of there_is_another before any questions are asked
-  # This must happen before gather() is called to prevent NameError
-  #impounded_document.exhibits.there_is_another = getattr(impounded_document.exhibits, #'there_is_another', False)
-  #if impounded_document.exhibits.has_exhibits:
-    #impounded_document.exhibits.gather()
 
   nav.set_section('Court information')
   trial_court
