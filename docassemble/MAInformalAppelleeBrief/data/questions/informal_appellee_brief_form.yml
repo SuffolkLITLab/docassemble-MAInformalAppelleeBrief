@@ -180,9 +180,11 @@ code: |
   
   nav.set_section('Supplemental record appendix upload')
   record_appendix
+  record_appendix_upload_question
   if record_appendix_document.exhibits.has_exhibits == True:
     record_appendix_document.exhibits.gather()
     appendix
+  
   impounded_record_appendix
   impounded_upload_question
   if impounded_document.exhibits.has_exhibits:
@@ -530,6 +532,16 @@ subquestion: |
   
 continue button field: impounded_record_appendix
 ---
+id: record appendix upload question
+question: |
+  Do you have a supplemental record appendix to upload?
+subquestion: |
+  If you have a supplemental record appendix that needs to be filed with the court, you can upload it on the next screen.
+fields:
+  - Do you have a supplemental record appendix to upload?: record_appendix_document.exhibits.has_exhibits
+    datatype: yesnoradio
+continue button field: record_appendix_upload_question
+---
 id: impounded upload question
 question: |
   Do you have any impounded documents you want to upload?
@@ -834,6 +846,18 @@ generic object: ALExhibit
 attachment:
   variable name: x.cover_page
   docx template file: exhibit_cover_sheet.docx
+---
+generic object: ALExhibitList
+code: |
+  # Always initialize these attributes before any questions try to access them
+  # This prevents NameError when AssemblyLine's baseline "another exhibit" question runs
+  x.there_are_any = x.has_exhibits
+  # Initialize there_is_another to False if not already set
+  # This MUST happen before gather() tries to access it
+  if not hasattr(x, 'there_is_another'):
+    x.there_is_another = False
+  elif x.there_is_another is None:
+    x.there_is_another = False
 ---
 id: any exhibits
 object: impounded_document.exhibits
