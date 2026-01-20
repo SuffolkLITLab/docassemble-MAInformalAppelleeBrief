@@ -16,7 +16,7 @@ metadata:
   before_you_start: |
     You will need to know the following information to complete this interview:
 
-    * The **Appeals Court** docket nuber for your case (has a "P", for example, 2024-P-1234). 
+    * The **Appeals Court** docket number for your case (has a "P", for example, 2024-P-1234). 
     * The **Trial Court** your case was decided in. 
     * The names of the plaintiff(s) and defendant(s) in your trial court case, and if they are represented by a lawyer, the lawyer's name and email or business mailing address. 
     * A copy of the brief sent to you by the appellant(s) or their attorney. 
@@ -151,7 +151,7 @@ subquestion: |
 
   If you think you need more time you can file this [Motion for Enlargement of Time to File a Brief](https://apps.suffolklitlab.org/run/appeal_enlarge_time/#/1)
 
-  Good luck!
+  We hope you find this interview helpful. 
 field: sees_nav_bar
 ---
 #################### Interview order #####################
@@ -262,7 +262,7 @@ subquestion: |
 
   You will need to know the following information to complete this interview:
 
-    * The **Appeals Court** panel case docket nuber for your case (has a "P", for example, **2024-P-1234**).
+    * The **Appeals Court** panel case docket number for your case (has a "P", for example, **2024-P-1234**).
     * The **trial court** your case was decided in. 
     * The names of the plaintiff(s) and defendant(s) in your trial court case, and if they are represented by a lawyer, the lawyer's name and email or business mailing address. 
     * A copy of the brief sent to you by the appellant(s) or their attorney. 
@@ -286,7 +286,7 @@ continue button field: recommendations
 question: |
   Recommendations
 subquestion: |
-    - **First**, organize your relevant trial court documents and upload them in this interview to create your supplemental record appendix and impounded record appendix.
+    - **First**, organize your relevant trial court documents and, if any document is not included in the appellant's record appendix, then you can upload them in this interview to create your supplemental record appendix and impounded record appendix.
     
     - **Second**, when preparing your brief's facts, case history, and legal argument, use the pages of the record appendices to reference where the judges can find support for your facts. 
     
@@ -385,7 +385,7 @@ subquestion: |
   [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program)
 # Add examples that the court believes are relevant
 fields:
-  - "Write the court decisions you want changed.": challenged_judgments
+  - "Write the court decisions that you support and do not want changed on appeal.": challenged_judgments
     input type: area
     help: |
       List specific decisions that the judge made. This does not have to necessarily be the final result of the case. You could say 'The judge's decision to allow _________ as evidence.'
@@ -426,7 +426,7 @@ fields:
 ---
 id: docket number
 question: |
-  What is the **Apeals Court** docket number for your case?
+  What is the **Appeals Court** docket number for your case?
 subquestion: |
   The Appeals Court docket number includes a "P" and is preceded by a year (2025) and followed by numbers, for example: **2024-P-1234**. 
 
@@ -455,6 +455,23 @@ fields:
     datatype: yesnoradio
   - "Are you filing this brief electronically?": filing_electronic
     datatype: yesnoradio
+---
+sets:
+  - other_parties[i].name.first
+  - other_parties[i].name.last
+  - other_parties[i].name.middle
+  - other_parties[i].name.suffix
+id: names of opposing parties
+question: |
+  % if user_started_case:
+  Name of ${ ordinal(i) } **defendant** or respondent in this
+  matter
+  % else:
+  Name of ${ ordinal(i) } **Appellant** or petitioner in this matter
+  % endif
+fields:
+  - code: |
+      other_parties[i].name_fields(person_or_business='unsure')
 ---
 id: certificate_of_service
 question: |
@@ -871,6 +888,7 @@ fields:
   - note: |
       You will have a chance to upload multiple documents. 
       You can also add additional pages to this document.
+      Upload each document in the order you want it to appear in the appendix, and with the title you want to appear for the document. 
     show if: x.has_exhibits
   - First document title: x[0].title
     maxlength: 60 # longer might break TOC
@@ -915,6 +933,7 @@ fields:
   - note: |
       You will have a chance to upload multiple documents. 
       You can also add additional pages to this document.
+      Upload each document in the order you want it to appear in the appendix, and with the title you want to appear for the document. 
     show if: x.has_exhibits
   - First document title: x[0].title
     maxlength: 60 # longer might break TOC
