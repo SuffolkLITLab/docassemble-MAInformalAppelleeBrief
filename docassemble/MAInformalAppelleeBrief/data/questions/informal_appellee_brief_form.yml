@@ -75,7 +75,7 @@ code: |
   github_repo_name =  'docassemble-InformalAppelleeBriefForm'
 ---
 code: |
-  interview_short_title = "Create an informal brief - appellee"
+  interview_short_title = "Create an informal appellee brief"
 ---
 code: |
   al_form_type = "appeal" 
@@ -90,7 +90,7 @@ objects:
           title="Supplemental Record Appendix",
           filename="record_appendix",
           add_page_numbers=True,
-          page_number_prefix="RA",
+          page_number_prefix="SRA",
           include_table_of_contents=True,
           include_exhibit_cover_pages=True,
           required=False,
@@ -99,7 +99,7 @@ objects:
           title="Impounded Record Appendix",
           filename="impounded_record_appendix_document",
           add_page_numbers=True,
-          page_number_prefix="IRA",
+          page_number_prefix="ISRA",
           include_table_of_contents=True,
           include_exhibit_cover_pages=True,
           required=True,
@@ -112,8 +112,8 @@ sections:
   - Supplemental record appendix upload
   - Impounded record appendix upload
   - Writing your informal brief
-  - Review and sign
   - Certificate of service
+  - Review and sign
   - Download 
 #  - Affidavit of indigency
 ---
@@ -214,11 +214,7 @@ code: |
   appeal_arguments
   appeal_conclusion
   users[0].signature_date = today()
-  
-  nav.set_section('Review and sign')
-  appellee_brief_preview_question
-  users[0].signature
-  support
+  support  
 
   nav.set_section ('Certificate of service')
   certificate_of_service
@@ -232,6 +228,10 @@ code: |
 
   filing_mail
 
+  nav.set_section('Review and sign')
+  appellee_brief_preview_question
+  users[0].signature
+  
   set_progress(95)
   signature_fields
 
@@ -285,7 +285,7 @@ continue button field: informal_appellee_brief_form_intro
 question: |
   Appellee informal brief
 subquestion: |
-  The Appeals Court permits only self-represented parties (no lawyer) to file an informal brief. This interview will help you write an informal brief for filing with the Appeals Court. Check the Appeals Court's website for information about the informal brief pilot program. 
+  This interview will help you write an informal brief for filing with the Appeals Court. The Appeals Court permits only self-represented parties (non lawyers) to file an informal brief. Check the Appeals Court's website for [information about the informal brief program](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program). 
 
   You will need to know the following information to complete this interview:
 
@@ -333,7 +333,7 @@ subquestion: |
 field: attorney
 action buttons:
   - label: Legal assistance
-    action: https://www.mass.gov/info-details/checklist-for-informal-brief-and-record-appendix-rejection-reasons
+    action: https://www.mass.gov/legal-assistance
     new window: True
     color: warning
     icon: sign-out-alt
@@ -356,7 +356,7 @@ question: |
 subquestion: |
   You can use this form to prepare and file an informal brief if you are replying to an appellant brief filed in the Massachusetts Appeals Court.
 
-  Click "View checklist" to access a checklist for filing an informal brief.
+  Click "View checklist" to access a checklist related to filing an informal brief.
 field: Information
 action buttons:
   - label: View checklist
@@ -370,11 +370,16 @@ action buttons:
 --- 
 id: Lower Court Information
 question: |
-  Trial court information
+  % if inst_type=="Court":
+  Trial court
+  % else:
+  Agency 
+  % endif
+  information
 fields:
-  - "The case was filed in the trial court on": filed_date
+  - "The case was filed in the ${'trial court' if inst_type=='Court' else 'agency'} on": filed_date
     datatype: date  
-  - "The trial court decided my case on": decision_date
+  - "The ${'trial court' if inst_type=='Court' else 'agency'} decided my case on": decision_date
     datatype: date
   - "The name(s) of the judge or judges who ruled on my case was Judge": judge_name
     input type: text
@@ -424,6 +429,7 @@ terms:
   code: |
     if inst_type == "Agency":
       court_department = agency_name
+      trial_court = agency_name
 #---
 #id: trial_court 
 #question: | 
@@ -452,6 +458,8 @@ subquestion: |
   You do not have to list the issue(s) or claim(s) of error before the Appeals Court unless you want to or disagree with what the appellant (appealing party) wrote. 
 
   It is your obligation to find out if any information in your case is impounded or confidential; for more information, please go to section (c) (4) of the [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program). 
+
+  Finally, please note that if you copy and paste text into any of the following text fields, you will need to review and correct any format issues, such as broken sentences or lines of text.
 fields:
   - "Appeal": appeal_issues
     input type: area
@@ -468,7 +476,7 @@ fields:
 ---
 id: Challenged judgments
 question: |
-  What order(s), decision(s), and judgment(s) of the trial court are being challenged?
+  What order(s), decision(s), and judgment(s) of the ${'trial court' if inst_type=='Court' else 'agency'} are being challenged?
 subquestion: |
   Explain the history of this case. You do not need to give a case history unless you want to or disagree with what the appellant wrote.  If you do give a history, you must include references to the page(s) in the appellant's record appendix or your supplemental record appendix where evidence of each statement can be found.
 
@@ -477,7 +485,7 @@ subquestion: |
   [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program)
 # Add examples that the court believes are relevant
 fields:
-  - "Write the court decisions that you support and do not want changed on appeal.": challenged_judgments
+  - "Write the ${'trial court' if inst_type=='Court' else 'agency'} decisions that you support and do not want changed on appeal.": challenged_judgments
     input type: area
     help: |
       List specific decisions that the judge made. This does not have to necessarily be the final result of the case. You could say 'The judge's decision to allow _________ as evidence.'
@@ -495,6 +503,8 @@ subquestion: |
   
   Do not refer to any party or individual by name if their identity has been **impounded** by statute, court rule, or court order. See Section (c) (4) of the [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program) for more information about impoundment and confidentiality.
 
+  *You will be able to preview your brief and attachments to check and edit page references before you sign.*
+
 fields:
   - "Facts": appeal_facts
     input type: area
@@ -504,11 +514,15 @@ id: Argument
 question: |
   Legal argument
 subquestion: |
-  The legal argument is an important section of your brief. Present your argument(s) why the Appeals Court should not overturn the decision of the trial court or agency.  You must support your argument(s) with citations to legal authorities such as case decisions (preferably from Massachusetts), statutes, regulations, court rules, constitutional provisions, or other authorities.  
+  The legal argument is an important section of your brief. Present your argument(s) why the Appeals Court should not overturn the decision of the trial court or agency.  
   
-  When discussing facts again in this section, you must include a reference to the specific page or pages in the appellant's record appendix, transcript(s), or supplemental appendix where support for that fact can be found. For guidance on how to cite legal sources in Massachusetts, reference this [guide](https://www.mass.gov/info-details/massachusetts-legal-writing-and-citations).
+  - When discussing facts again in this section, you must reference to the specific page or pages in your **record appendix** or **transcript(s)** where support for that fact can be found.
 
-  If you do not explain your legal argument and support it with citations to governing legal sources, the Appeals Court may not consider your argument. The legal argument for each issue can be multiple pages. Your entire brief is allowed to be 30 pages total. 
+  - Your argument must be supported with citations to legal authorities such as case decisions (preferably from Massachusetts), statutes, regulations, court rules, constitutional provisions, or other authorities.  
+  
+  For guidance on how to cite legal sources in Massachusetts, reference this [guide](https://www.mass.gov/info-details/massachusetts-legal-writing-and-citations).
+
+  #####If you do not explain your legal argument and support it with citations to governing legal sources, the Appeals Court may not consider your argument. The legal argument for each issue can be multiple pages. Your entire brief is allowed to be 30 pages total. 
 
   [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program)
 fields:
@@ -556,6 +570,9 @@ validation code: |
   else:
     if filing_electronic:
       validation_error("You must mail your brief.", field="filing_institution")
+    if not filing_mail and not filing_electronic:
+      validation_error("You must choose mail or electronic filing.", field="filing_mail")
+
 ---
 sets:
   - other_parties[i].name.first
@@ -605,11 +622,11 @@ fields:
 ---
 id: Conclusion
 question: |
-  Conclusion/Relief requested
+  Conclusion/relief requested
 subquestion: |
-  Write a statement of what relief or outcome you are asking the Appeals Court to order (for example, affirm the judgment).
+  Write a statement of what relief or outcome you are asking the Appeals Court to order (for example, order a new trial, enter judgment for you, modify the trial court judgment, etc.)
 
-  [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program).
+  [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program)
 fields:
   - "Write a summary of what you want from the court.": appeal_conclusion
     input type: area
@@ -628,7 +645,7 @@ subquestion: |
 
   Note that only materials that were presented to the lower court or agency may be included in a supplemental appendix.  If you wish to include materials that were not presented to the lower court or agency, you must file a motion in the Appeals Court seeking permission to do so. Such motions are usually denied because the Appeals Court reviews the judge's decision based only on the information that was before the judge.
 
-  [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program).
+  [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program)
 
   **You can upload documents on the next screen.**
 field: record_appendix_upload_question
@@ -647,7 +664,7 @@ subquestion: |
   
   Documents that are not impounded but appear in an appendix and contain confidential or personal identifying information (PII) must be "redacted," which means the confidential information and PII is blacked out so it cannot be seen.  Examples of PII are Social Security numbers, taxpayer identification numbers, driver's license numbers, State-issued ID card numbers, passport numbers, financial account numbers, and credit or debit card numbers.
 
-  [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program).
+  [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program)
 
     **You can upload documents on the next screen.**
 
@@ -853,6 +870,23 @@ review:
     css class: bg-secondary-subtle
     show if: impounded_record_appendix
 
+  - Edit: filing_institution
+    button: |
+      **Filing and service method**
+
+      % if filing_institution:
+      You are in federal or state prison.
+      % else:
+      You are not in federal or state prison.
+      % endif
+
+      % if filing_mail:
+      You will file/serve by mail.
+      % endif
+
+      % if filing_electronic:
+      You will file/serve electronically.
+      % endif
     
 ---
 continue button field: users.revisit
@@ -916,7 +950,7 @@ event: informal_appellee_brief_form_download
 question: |
   Almost done
 subquestion: |
-  Thank you ${users}. Your form is ready to download and deliver. Simpily follow the downloadable instruction. View, download and send your form below. 
+  Thank you ${users[0]}. Your form is ready to download and deliver. Simpily follow the downloadable instruction. View, download and send your form below. 
 
   [eFile my appeal](https://massachusetts.tylertech.cloud/OfsWeb)
 
