@@ -10,23 +10,21 @@ metadata:
   short title: >-
     Appellee informal brief
   description: |-
-    The Appeals Court permits only self-represented parties (no lawyer) to file an informal brief. This interview will help you write an informal brief for filing with the Appeals Court. Check the Appeals Court's website for information about the informal brief pilot program.  
+    This interview will help you write an informal brief for filing with the Appeals Court. The Appeals Court permits only self-represented parties (no lawyer) to file an informal brief. Check the Appeals Court's website for [information about the informal brief program](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program).   
   can_I_use_this_form: |
     If you are replying to an appellant brief, you can use this interview to write an informal brief to the Appeals Court. 
   before_you_start: |
     You will need to know the following information to complete this interview:
 
-    * The **Appeals Court** docket number for your case (has a "P", for example, 2024-P-1234). 
-    * The **Trial Court** your case was decided in. 
-    * The names of the plaintiff(s) and defendant(s) in your trial court case, and if they are represented by a lawyer, the lawyer's name and email or business mailing address. 
-    * A copy of the brief sent to you by the appellant(s) or their attorney. 
+    - The **Appeals Court** docket number for your case (has a "P", for example, 2024-P-1234). 
+    - The **Trial Court** your case was decided in. 
+    - The names of the plaintiff(s) and defendant(s) in your trial court case, and if they are represented by a lawyer, the lawyer's name and email or business mailing address. 
+    - A copy of the brief sent to you by the appellant(s) or their attorney. 
 
     Your Brief's Due Date:
   
-    * Check with the Appeals Court for the current due date for your brief. 
-    * If you need more time to finish and file your brief, you can file a motion with the Appeals Court to enlarge the time using the interview [here](https://courtformsonline.org/ma/forms/enlarge-time-to-file-appeals-court). 
-
-    **A brief for the Appeals Court is complicated and can take significant time to write and finish. Save your brief in this interview so you can return later and finish it.**
+    - Check with the Appeals Court for the current due date for your brief. 
+    - If you need more time to finish and file your brief, you can file a motion with the Appeals Court to enlarge the time using the interview [here](https://courtformsonline.org/ma/forms/enlarge-time-to-file-appeals-court). 
   maturity: production
   estimated_completion_minutes: 120
   estimated_completion_delta: 30
@@ -41,7 +39,9 @@ metadata:
     - "CO-03-00-00-00"
     - "CO-07-05-00-00"
   authors:
-    -  Erin Gray
+    - Jack Brandt
+    - Erin Gray
+    - Kathryn Lynch
   original_form: 
     - https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program
   original_form_published_on: ""
@@ -96,7 +96,7 @@ objects:
           required=False,
         )
   - impounded_document: ALExhibitDocument.using(
-          title="Impounded Record Appendix",
+          title="Impounded Supplemental Record Appendix",
           filename="impounded_record_appendix_document",
           add_page_numbers=True,
           page_number_prefix="ISRA",
@@ -222,9 +222,9 @@ code: |
   filing_electronic
   if filing_electronic:
     for party in users:
-      party.address.email
+      party.email
     for party in other_parties:
-      party.address.email
+      party.email
 
   filing_mail
 
@@ -285,7 +285,7 @@ continue button field: informal_appellee_brief_form_intro
 question: |
   Appellee informal brief
 subquestion: |
-  This interview will help you write an informal brief for filing with the Appeals Court. The Appeals Court permits only self-represented parties (non lawyers) to file an informal brief. Check the Appeals Court's website for [information about the informal brief program](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program). 
+  This interview will help you write an informal brief for filing with the Appeals Court. The Appeals Court permits only self-represented parties (no lawyer) to file an informal brief. Check the Appeals Court's website for [information about the informal brief program](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program). 
 
   You will need to know the following information to complete this interview:
 
@@ -297,7 +297,7 @@ subquestion: |
 id: support
 continue button field: support
 question: |
-  You wrote your informal appellee brief
+  Only a few more questions
 subquestion: |
   We just need to ask a few more questions before you're ready to file your brief with the court. If you need to take a break, you can come back to this screen later.
 ---
@@ -428,8 +428,10 @@ terms:
   - inst_type
   code: |
     if inst_type == "Agency":
-      court_department = agency_name
+      #court_department = agency_name
       trial_court = agency_name
+    else:
+      trial_court = court_department
 #---
 #id: trial_court 
 #question: | 
@@ -569,7 +571,7 @@ validation code: |
       validation_error("You must choose mail or electronic filing.", field="filing_mail")
   else:
     if filing_electronic:
-      validation_error("You must mail your brief.", field="filing_institution")
+      validation_error("You must mail your brief if filing from prison.", field="filing_institution")
     if not filing_mail and not filing_electronic:
       validation_error("You must choose mail or electronic filing.", field="filing_mail")
 
@@ -740,7 +742,7 @@ subquestion: |
   our terms and conditions.
 signature: signature_fields
 under: |
-  ${ user[0].signature }
+  ${ users[0].signature }
 ---
 id: preview appellee_brief
 question: |
@@ -950,7 +952,7 @@ event: informal_appellee_brief_form_download
 question: |
   Almost done
 subquestion: |
-  Thank you ${users[0]}. Your form is ready to download and deliver. Simpily follow the downloadable instruction. View, download and send your form below. 
+  Thank you ${users[0]}. Your form is ready to download and deliver. Follow the downloadable instruction. View, download and send your form below. 
 
   [eFile my appeal](https://massachusetts.tylertech.cloud/OfsWeb)
 
@@ -965,12 +967,12 @@ always include editable files: True
 ---
 #code: |
   #affidavitofindigency_attachment.enabled = is_indigent
----
-code: |
-  if record_appendix_upload_question == True:
-    bundle_elements = [appellee_brief_attachment, record_appendix_document, impounded_document]
-  else:
-    bundle_elements = [appellee_brief_attachment, impounded_document]
+#---
+#code: |
+#  if record_appendix_upload_question == True:
+#    bundle_elements = [appellee_brief_attachment, record_appendix_document, impounded_document]
+#  else:
+#    bundle_elements = [appellee_brief_attachment, impounded_document]
 ---
 # ALDocument objects specify the metadata for each template
 objects:
@@ -982,8 +984,8 @@ objects:
 ---
 # Bundles group the ALDocuments into separate downloads, such as for court and for the user
 objects:
-  - al_user_bundle: ALDocumentBundle.using(elements=[appellee_brief_Post_interview_instructions] + bundle_elements, filename="appellee_brief", title="All forms to download for your records", enabled=True)
-  - al_court_bundle: ALDocumentBundle.using(elements=bundle_elements,  filename="appellee_brief", title="All forms to deliver to court", enabled=True)
+  - al_user_bundle: ALDocumentBundle.using(elements=[appellee_brief_Post_interview_instructions, appellee_brief_attachment, record_appendix_document, impounded_document], filename="appellee_brief", title="All forms to download for your records", enabled=True)
+  - al_court_bundle: ALDocumentBundle.using(elements=[appellee_brief_attachment, record_appendix_document, impounded_document],  filename="appellee_brief", title="All forms to deliver to court", enabled=True)
 # Removed affidavit_of_indigency_attachment
 ---
 # Each attachment defines a key in an ALDocument. We use i as the placeholder here so the same template is 
