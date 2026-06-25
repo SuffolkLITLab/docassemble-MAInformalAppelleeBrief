@@ -24,7 +24,7 @@ metadata:
     Your Brief's Due Date:
   
     - Check with the Appeals Court for the current due date for your brief. 
-    - If you need more time to finish and file your brief, you can file a motion with the Appeals Court to enlarge the time using the interview [here](https://courtformsonline.org/ma/forms/enlarge-time-to-file-appeals-court). 
+    - If you need more time to finish and file your brief, you can [file a motion with the Appeals Court to enlarge the time]](https://courtformsonline.org/ma/forms/enlarge-time-to-file-appeals-court). 
   maturity: production
   estimated_completion_minutes: 120
   estimated_completion_delta: 30
@@ -321,7 +321,7 @@ question: |
 subquestion: |
     - Check with the Appeals Court for the current due date for your brief. 
     
-    - If you need more time to finish and file your brief, you can file a motion with the Appeals Court to enlarge the time using the interview [here](https://courtformsonline.org/ma/forms/enlarge-time-to-file-appeals-court). 
+    - If you need more time to finish and file your brief, you can [file a motion with the Appeals Court](https://courtformsonline.org/ma/forms/enlarge-time-to-file-appeals-court) to enlarge the time. 
 
     - A brief for the Appeals Court is complicated and can take significant time to write and finish. Save your brief in this interview so you can return later and finish it.
 
@@ -402,7 +402,7 @@ id: court_agency
 question: |
   Is the decision you are appealing from a {court} or an {agency}? 
 fields: 
-  - no label: inst_type
+  - Choose source: inst_type
     datatype: radio
     choices:
       - Court
@@ -452,7 +452,13 @@ question: |
   Is there any other **appellant** or petitioner in this matter?
   % endif
 fields:
-  - no label: other_parties.there_is_another
+  - label: |
+      % if user_started_case:
+      Is there any other appellee or respondent in this matter?
+      % else:
+      Is there any other appellant or petitioner in this matter?
+      % endif
+    field: other_parties.there_is_another
     datatype: yesnoradio
 ---
 id: Issues on Appeal
@@ -461,9 +467,9 @@ question: |
 subquestion: |
   You do not have to list the issue(s) or claim(s) of error before the Appeals Court unless you want to or disagree with what the appellant (appealing party) wrote. 
 
-  It is your obligation to find out if any information in your case is impounded or confidential; for more information, please go to section (c) (4) of the [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program). 
+  It is your obligation to find out if any information in your case is impounded or confidential; for more information, go to section (c) (4) of the [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program). 
 
-  Finally, please note that if you copy and paste text into any of the following text fields, you will need to review and correct any format issues, such as broken sentences or lines of text.
+  Finally, note that if you copy and paste text into any of the following text fields, you will need to review and correct any format issues, such as broken sentences or lines of text.
 fields:
   - "Appeal": appeal_issues
     input type: area
@@ -484,7 +490,7 @@ question: |
 subquestion: |
   Explain the history of this case. You do not need to give a case history unless you want to or disagree with what the appellant wrote.  If you do give a history, you must include references to the page(s) in the appellant's record appendix or your supplemental record appendix where evidence of each statement can be found.
 
-  Your case's docket will identify the important dates, filings, orders, and judges' names. Some Massachusetts Trial Court case dockets are available [here](https://www.masscourts.org/eservices/home.page). You can contact the clerk or register of the Trial Court office where your case began for a copy of the docket. 
+  Your case's docket will identify the important dates, filings, orders, and judges' names. Some Massachusetts Trial Court case dockets are available [on MassCourts](https://www.masscourts.org/eservices/home.page). You can contact the clerk or register of the Trial Court office where your case began for a copy of the docket. 
 
   [Informal Brief Guidance](https://www.mass.gov/info-details/appeals-court-informal-brief-pilot-program)
 # Add examples that the court believes are relevant
@@ -605,24 +611,6 @@ subquestion: |
 
   The Certificate of Service will be automatically attached to your downloadable brief.
 continue button field: certificate_of_service
----
-id: user role
-question: |
-  Are you an appellant or appellee ?
-subquestion: | 
-  This form is intended for use by an appellee. 
-  
-  An **appellee** is a party who is not appealing and intends to respond to the appellant's request for a review of the lower court's decision, regardless of their party designation in the trial court.
-  
-  An **appellant** is a party who is asks a higher court to review the decision of the lower court, regardless of the appellant's party designation (plaintiff, defendant, etc.) in the trial court. An appellant is a party that has filed a notice of appeal in the trial court. 
-
-  If you are an appellant, this interview will not help you. Instead, you can review the Appeals Court's informal brief pilot guidance page for the appellant brief form. 
-  
-fields: 
-  - no label: user_role 
-    input type: radio 
-    choices: 
-      - Appellee: APPELLEE #only offering one option for the user. We can make this conditional to direct the user to either the appellant brief or appellee brief.
 ---
 id: Conclusion
 question: |
@@ -960,7 +948,7 @@ subject: |
 content: |
   Attached are ${ users[0] }'s informal brief documents.
 
-  Please review the attached documents before filing or serving them.
+  Be sure to review the attached documents before filing or serving them.
 ---
 id: download appellee_brief
 event: informal_appellee_brief_form_download
