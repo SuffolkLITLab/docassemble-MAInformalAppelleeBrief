@@ -428,7 +428,7 @@ terms:
   - inst_type
   code: |
     if inst_type == "Agency":
-      #court_department = agency_name
+      court_department = ""
       trial_court = agency_name
     else:
       trial_court = court_department
@@ -947,20 +947,29 @@ edit:
   - email
 confirm: True
 ---
+template: appellee_brief_email_template
+subject: |
+  Appellee's informal brief documents
+content: |
+  Attached are ${ users[0] }'s informal brief documents.
+
+  Please review the attached documents before filing or serving them.
+---
 id: download appellee_brief
 event: informal_appellee_brief_form_download
 question: |
   Almost done
 subquestion: |
-  Thank you ${users[0]}. Your form is ready to download and deliver. Follow the downloadable instruction. View, download and send your form below. 
+  ${users[0]}, Your form is ready to download and deliver. You can view and download your documents below. Follow the downloadable instruction. There you will find next steps, including how to [eFile your appeal](https://massachusetts.tylertech.cloud/OfsWeb). Should you need to edit anything, you can click the "Edit answers" button to edit your answers.  ${ action_button_html(url_action('review_appellee_brief'), label='Edit answers', color='info') }
 
-  [eFile my appeal](https://massachusetts.tylertech.cloud/OfsWeb)
+  Alternativly, you can email yourself an editable copy (Word doc) of your brief by clicking *Include an editable copy* under *Get a copy of the documents in email* and hitting *Send* to email a copy to yourself.
 
   ${ al_user_bundle.download_list_html() }
   
-  ${ al_user_bundle.send_button_html(show_editable_checkbox=True) }
-
-#  ${ impounded_document }
+  ${ al_user_bundle.send_button_html(
+    show_editable_checkbox=True,
+    template_name="appellee_brief_email_template"
+  ) }
 
 progress: 100
 always include editable files: True
@@ -1078,20 +1087,20 @@ fields:
       "image/png, image/jpeg, .doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,.pdf"  
 validation code: |
   if x.has_exhibits:
-    if len(x) == 0 or not x[0].pages:
+    if not x[i].pages:
       validation_error("Please upload your document or answer 'No' to the previous question.")
-    full_size = sum(a_page.size_in_bytes() for a_page in x[0].pages)
+    full_size = sum(a_page.size_in_bytes() for a_page in x[i].pages)
     if full_size > (15 * 1024 * 1024):
       validation_error("Upload a file smaller than 15 MB.")
     if hasattr(x, 'maximum_size'):
       if full_size > x.maximum_size:
         validation_error(f"Upload a file smaller than {humanize.naturalsize(x.maximum_size)}")
     try:
-      pdf_concatenate(x[0].pages)
+      pdf_concatenate(x[i].pages)
     except:
       validation_error("Unable to convert this file. Please upload a new one.")
-    x[0].pages.complete_attribute = 'ok'
-    x[0].pages.reset_gathered()  # force re-gathering additional pages
+    x[i].pages.complete_attribute = 'ok'
+    x[i].pages.reset_gathered()
 ---
 generic object: ALExhibitList
 id: any exhibits
@@ -1114,7 +1123,7 @@ fields:
   - Document title: x[i].title
     maxlength: 60 # longer might break TOC
     show if: x.has_exhibits
-  - Upload the first Document: x[i].pages
+  - Upload document: x[i].pages
     show if: x.has_exhibits
     datatype: files
     maximum image size: 1024
@@ -1123,17 +1132,17 @@ fields:
       "image/png, image/jpeg, .doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,.pdf"  
 validation code: |
   if x.has_exhibits:
-    if len(x) == 0 or not x[0].pages:
+    if not x[i].pages:
       validation_error("Please upload your document or answer 'No' to the previous question.")
-    full_size = sum(a_page.size_in_bytes() for a_page in x[0].pages)
+    full_size = sum(a_page.size_in_bytes() for a_page in x[i].pages)
     if full_size > (15 * 1024 * 1024):
       validation_error("Upload a file smaller than 15 MB.")
     if hasattr(x, 'maximum_size'):
       if full_size > x.maximum_size:
         validation_error(f"Upload a file smaller than {humanize.naturalsize(x.maximum_size)}")
     try:
-      pdf_concatenate(x[0].pages)
+      pdf_concatenate(x[i].pages)
     except:
       validation_error("Unable to convert this file. Please upload a new one.")
-    x[0].pages.complete_attribute = 'ok'
-    x[0].pages.reset_gathered()  # force re-gathering additional pages
+    x[i].pages.complete_attribute = 'ok'
+    x[i].pages.reset_gathered()
