@@ -955,9 +955,9 @@ event: informal_appellee_brief_form_download
 question: |
   Almost done
 subquestion: |
-  ${users[0]}, Your form is ready to download and deliver. You can view and download your documents below. Follow the downloadable instruction. There you will find next steps, including how to [eFile your appeal](https://massachusetts.tylertech.cloud/OfsWeb). Should you need to edit anything, you can click the "Edit answers" button to edit your answers.  ${ action_button_html(url_action('review_appellee_brief'), label='Edit answers', color='info') }
+  ${users[0]}, your form is ready to download and deliver. You can view and download your documents below. Follow the downloadable instructions. There you will find next steps, including how to [eFile your appeal](https://massachusetts.tylertech.cloud/OfsWeb). Should you need to edit anything, you can click the "Edit answers" button to edit your answers.  ${ action_button_html(url_action('review_appellee_brief'), label='Edit answers', color='info') }
 
-  Alternativly, you can email yourself an editable copy (Word doc) of your brief by clicking *Include an editable copy* under *Get a copy of the documents in email* and hitting *Send* to email a copy to yourself.
+  Alternatively, you can email yourself an editable copy (Word doc) of your brief by clicking *Include an editable copy* under *Get a copy of the documents in email* and hitting *Send* to email a copy to yourself.
 
   ${ al_user_bundle.download_list_html() }
   
